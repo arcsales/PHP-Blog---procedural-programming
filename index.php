@@ -23,7 +23,7 @@
             while ($row = mysqli_fetch_assoc($getPosts)) {
                 $post_id = $row["id"];
                 $post_title = $row["title"];
-                $post_author = $row["author"];
+                $post_author = $row["author"]; 
                 $post_date = $row["date"];
                 $post_image = $row["image"];
                 $post_content = substr($row["content"], 0, 150) . "...";
