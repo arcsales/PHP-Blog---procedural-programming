@@ -15,6 +15,26 @@ if (isset($_POST['checkBoxArray'])) {
                 $query = "DELETE FROM posts WHERE id = $post_value_id ";
                 $bulk_delete = mysqli_query($conn, $query);
                 break;
+            case 'clone':
+                $query = "SELECT * FROM posts WHERE id = $post_value_id ";
+                $bulk_clone = mysqli_query($conn, $query);
+
+                while ($row = mysqli_fetch_array($bulk_clone)) {
+                    $title = $row['title'];
+                    $category_id = $row['category_id'];
+                    $date = $row['date'];
+                    $author = $row['author'];
+                    $status = $row['status'];
+                    $image = $row['image'];
+                    $tags = $row['tags'];
+                    $content = $row['content'];
+                }
+
+                $query = "INSERT INTO posts(title, category_id, date, author, status, image, tags, content )";
+                $query .= "VALUES('{$title}', '{$category_id}', '{$date}', '{$author}', '{$status}', '{$image}', '{$tags}', '{$content}' )";
+                $copy_query = mysqli_query($conn, $query);
+                confirm($conn);
+                break;
         }
     }
 }
@@ -27,6 +47,7 @@ if (isset($_POST['checkBoxArray'])) {
                 <option value="published">Publish</option>
                 <option value="draft">Draft</option>
                 <option value="delete">Delete</option>
+                <option value="clone">Clone</option>
             </select>
         </div>
         <div class="col-xs-4">
@@ -90,10 +111,11 @@ if (isset($_POST['checkBoxArray'])) {
                                 <td>{$date}</td>
                                 <td><a href='../post.php?p_id={$post_id}'>View</a></td>
                                 <td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>
-                                <td><a href='posts.php?delete={$post_id}'>Delete</a></td>
+                                <td><a onClick =\"javascript: return confirm('Are you sure you want to delete the post?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
                                 </tr>";
             }
             ?>
+
         </tbody>
     </table>
 </form>

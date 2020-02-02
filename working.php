@@ -1,5 +1,5 @@
+<!-- When deliting category to check if any posts related and move to default category. -->
 <!-- Posted Comments -->
-
                 <!-- Comment -->
                 <div class="media">
                     <a class="pull-left" href="#">

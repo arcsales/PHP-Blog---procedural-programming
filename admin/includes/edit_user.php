@@ -30,16 +30,24 @@ if (isset($_POST['edit_user'])) {
     $user_email = $_POST['user_email'];
     $user_password = $_POST['user_password'];
     /*  $post_date = date('d-m-y');
-    $post_comment_count = 4;
 
     move_uploaded_file($post_image_temp, "../images/$post_image");
  */
+    $query = "SELECT randSalt FROM users";
+    $select_randsalt_query = mysqli_query($conn, $query);
+    confirm($conn);
+
+    $row = mysqli_fetch_array($select_randsalt_query);
+    $salt = $row['randSalt'];
+    $hashed_password = crypt($user_password, $salt);
+
+
     $query = "UPDATE users SET ";
     $query .= "user_firstname = '{$user_firstname}', ";
     $query .= "user_lastname = '{$user_lastname}', ";
     $query .= "username = '{$username}', ";
     $query .= "user_role = '{$user_role}', ";
-    $query .= "user_password = '{$user_password}', ";
+    $query .= "user_password = '{$hashed_password}', ";
     $query .= "user_email = '{$user_email}' ";
     $query .= "WHERE user_id = '{$user_id}' ";
     $update_user = mysqli_query($conn, $query);
@@ -61,7 +69,7 @@ if (isset($_POST['edit_user'])) {
     </div>
     <div class="form-group">
         <select name="user_role" id="">
-            <option value="subscriber"><?php echo $user_role; ?></option>
+            <option value="<?php echo $user_role; ?>"><?php echo $user_role; ?></option>
             <?php
             if ($user_role == 'admin') {
                 echo "<option value='subscriber'>subscriber</option>";
@@ -89,6 +97,6 @@ if (isset($_POST['edit_user'])) {
         <input id="user_password" value="<?php echo $user_password; ?>" class="form-control" type="password" name="user_password">
     </div>
     <div class="form-group">
-        <input class="btn btn-primary" type="submit" name="edit_user" value="Add User">
+        <input class="btn btn-primary" type="submit" name="edit_user" value="Update User">
     </div>
 </form>
