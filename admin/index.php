@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <?php
-                                    $query = "SELECT * FROM posts";
+                                    $query = "SELECT * FROM posts LIMIT 0, 10";
                                     $select_all_posts = mysqli_query($conn, $query);
                                     $post_count = mysqli_num_rows($select_all_posts);
                                     echo "<div class='huge'>{$post_count}</div>";

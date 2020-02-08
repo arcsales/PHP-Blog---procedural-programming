@@ -66,6 +66,7 @@ if (isset($_POST['checkBoxArray'])) {
                 <td>Tags</td>
                 <td>Comments</td>
                 <td>Date</td>
+                <td>Views</td>
                 <td>View Post</td>
                 <td>Edit</td>
                 <td>Delete</td>
@@ -73,7 +74,7 @@ if (isset($_POST['checkBoxArray'])) {
         </thead>
         <tbody>
             <?php
-            $query = "SELECT * FROM posts";
+            $query = "SELECT * FROM posts ORDER BY id DESC";
             $getPosts = mysqli_query($conn, $query);
 
             while ($row = mysqli_fetch_assoc($getPosts)) {
@@ -86,6 +87,7 @@ if (isset($_POST['checkBoxArray'])) {
                 $tags = $row['tags'];
                 $comments = $row['comment_count'];
                 $date = $row['date'];
+                $views = $row['views_count'];
                 echo "<tr>"; ?>
 
                 <td><input type="checkbox" class="checkBoxes" name="checkBoxArray[]" value="<?php echo $post_id; ?>"></td>
@@ -109,6 +111,7 @@ if (isset($_POST['checkBoxArray'])) {
                                 <td>{$tags}</td>
                                 <td>{$comments}</td>
                                 <td>{$date}</td>
+                                <td><a href='posts.php?reset={$post_id}'>{$views}</a></td>
                                 <td><a href='../post.php?p_id={$post_id}'>View</a></td>
                                 <td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>
                                 <td><a onClick =\"javascript: return confirm('Are you sure you want to delete the post?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
@@ -123,5 +126,11 @@ if (isset($_POST['checkBoxArray'])) {
     $post_id = $_GET['delete'];
     $query = "DELETE FROM posts WHERE id = {$post_id}";
     $getDeleted = mysqli_query($conn, $query);
+    header("Location: posts.php");
+}
+if (isset($_GET['reset'])) {
+    $post_id = $_GET['reset'];
+    $query = "UPDATE posts SET views_count = 0 WHERE id = {$post_id}";
+    $resetQuery = mysqli_query($conn, $query);
     header("Location: posts.php");
 } ?>

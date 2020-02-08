@@ -1,5 +1,6 @@
 <?php include('includes/db.php'); ?>
 <?php include('includes/header.php'); ?>
+<?php include('admin/functions.php'); ?>
 
 <!-- Navigation -->
 <?php include('includes/nav.php'); ?>
@@ -10,44 +11,48 @@
     <div class="row">
 
         <!-- Blog Entries Column -->
-        <div class="col-md-8"> 
-
-            <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>
+        <div class="col-md-8">
 
             <?php
             if (isset($_GET['p_id'])) {
                 $post_id = $_GET['p_id'];
-            }
 
+                $view_query = "UPDATE posts SET views_count = views_count + 1 WHERE id = $post_id ";
+                $update_views = mysqli_query($conn, $view_query);
+                confirm($conn);
 
+                $query = "SELECT * from posts WHERE id = {$post_id}";
+                $getPosts = mysqli_query($conn, $query);
+                while ($post = mysqli_fetch_assoc($getPosts)) {
+                    $post_title = $post["title"];
+                    $post_author = $post["author"];
+                    $post_date = $post["date"];
+                    $post_image = $post["image"];
+                    $post_content = $post["content"]; ?>
 
-            $query = "SELECT * from posts WHERE id = {$post_id}";
-            $getPosts = mysqli_query($conn, $query);
-            while ($post = mysqli_fetch_assoc($getPosts)) {
-                $post_title = $post["title"];
-                $post_author = $post["author"];
-                $post_date = $post["date"];
-                $post_image = $post["image"];
-                $post_content = $post["content"]; ?>
+                    <h1 class="page-header">
+                        Page Heading
+                        <small>Secondary Text</small>
+                    </h1>
 
-                <h2>
-                    <a href="#"><?php echo $post_title; ?></a>
-                </h2>
-                <p class="lead">
-                    by <a href="index.php"><?php echo $post_author; ?></a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
-                <hr>
-                <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
-                <hr>
-                <p><?php echo $post_content; ?></p>
+                    <h2>
+                        <a href="#"><?php echo $post_title; ?></a>
+                    </h2>
+                    <p class="lead">
+                        by <a href="index.php"><?php echo $post_author; ?></a>
+                    </p>
+                    <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
+                    <hr>
+                    <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
+                    <hr>
+                    <p><?php echo $post_content; ?></p>
 
-                <hr>
+                    <hr>
 
-            <?php  } ?>
+            <?php  }
+            } else {
+                header("Location: index.php");
+            } ?>
 
             <?php
             if (isset($_POST['create_comment'])) {
