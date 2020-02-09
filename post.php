@@ -68,9 +68,9 @@
                     if (!$post_comment) {
                         die('Something is wrong' . mysqli_error($conn));
                     }
-                    $query = "UPDATE posts SET comment_count = comment_count + 1 ";
+              /*       $query = "UPDATE posts SET comment_count = comment_count + 1 ";
                     $query .= "WHERE id=$post_id";
-                    $updateComment = mysqli_query($conn, $query);
+                    $updateComment = mysqli_query($conn, $query); */
                     echo "<script>alert('Your comment is awaiting for moderation!')</script>";
                 } else {
                     echo "<script>alert('Fields cannot be empty!')</script>";
