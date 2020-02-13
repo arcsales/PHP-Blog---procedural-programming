@@ -20,7 +20,7 @@ if (isset($_POST['create_post'])) {
     $add_post = mysqli_query($conn, $query);
     confirm($add_post);
     $the_post_id = mysqli_insert_id($conn);
-    echo "<p class='bg-success'>Post Added! <a href='../post.php?p_id=$the_post_id'>View post</a> or <a href='add_post.php'>Create more posts</a></p>";
+    echo "<p class='bg-success'>Post Added! <a href='../post.php?p_id=$the_post_id'>View post</a> or <a href='posts.php?source=add_post'>Create more posts</a></p>";
 }
 ?>
 
@@ -50,9 +50,28 @@ if (isset($_POST['create_post'])) {
     </div>
 
     <div class="form-group">
+        <label for="author">User</label>
+
+        <select name="author" id="">
+            <?php
+            $query = "SELECT * FROM users";
+            $getUsers = mysqli_query($conn, $query);
+
+            confirm($getUsers);
+            while ($row = mysqli_fetch_assoc($getUsers)) {
+                $user_id = $row["user_id"];
+                $username = $row["username"];
+                echo "<option name='{$user_id}' value='{$username}'>{$username}</option>";
+            }
+
+            ?>
+        </select>
+    </div>
+
+    <!--     <div class="form-group">
         <label for="author">Post Author</label>
         <input id="author" class="form-control" type="text" name="author">
-    </div>
+    </div> -->
     <div class="form-group">
         <label for="post_status">Post Status</label>
         <select name="post_status" id="post_status">

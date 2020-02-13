@@ -1,4 +1,5 @@
 <?php
+include("delete_modal.php");
 if (isset($_POST['checkBoxArray'])) {
     foreach ($_POST['checkBoxArray'] as $post_value_id) {
         $bulk_options = $_POST['bulk-options'];
@@ -112,15 +113,16 @@ if (isset($_POST['checkBoxArray'])) {
                 $query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
                 $send_query = mysqli_query($conn, $query);
                 $comment_count = mysqli_num_rows($send_query);
-                echo "<td>{$comment_count}</td>";
+                echo "<td><a href='post_comments.php?id={$post_id}'>{$comment_count}</a></td>";
 
                 echo "<td>{$date}</td>
                                 <td><a href='posts.php?reset={$post_id}'>{$views}</a></td>
                                 <td><a href='../post.php?p_id={$post_id}'>View</a></td>
                                 <td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>
-                                <td><a onClick =\"javascript: return confirm('Are you sure you want to delete the post?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
+                                <td><a href='javascript:void(0)' rel='$post_id' class='delete_btn'>Delete</a></td>
                                 </tr>";
             }
+            //<td><a onClick =\"javascript: return confirm('Are you sure you want to delete the post?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
             ?>
 
         </tbody>
@@ -138,3 +140,13 @@ if (isset($_GET['reset'])) {
     $resetQuery = mysqli_query($conn, $query);
     header("Location: posts.php");
 } ?>
+<script>
+    $(document).ready(function() {
+        $(".delete_btn").on('click', function() {
+            var id = $(this).attr("rel");
+            var delete_url = "posts.php?delete=" + id + " ";
+            $(".modal_delete_link").attr("href", delete_url);
+            $("#myModal").modal('show');
+        })
+    });
+</script>

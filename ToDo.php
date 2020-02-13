@@ -1,0 +1,3 @@
+- Improve security
+  - escape strings in all inputs
+  - deny access to any url related to GET methods

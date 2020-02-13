@@ -83,3 +83,9 @@ function deleteCategory()
         header("Location: categories.php");
     }
 }
+//escape any string and get safe from mysql injection 
+function escape($string)
+{
+    global $conn;
+    return mysqli_real_escape_string($conn, trim($string));
+}
