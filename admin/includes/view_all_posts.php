@@ -125,7 +125,7 @@ if (isset($_POST['checkBoxArray'])) {
             //<td><a onClick =\"javascript: return confirm('Are you sure you want to delete the post?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
             ?>
 
-        </tbody>
+        </tbody> 
     </table>
 </form>
 <?php if (isset($_GET['delete'])) {

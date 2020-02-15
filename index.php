@@ -30,22 +30,28 @@
             } else {
                 $page_1 = ($page * $per_page) - $per_page;
             }
-            $post_query_count = "SELECT * FROM posts";
+            if ($_SESSION['role'] == 'admin') {
+                $post_query_count = "SELECT * FROM posts";
+            } else {
+                $post_query_count = "SELECT * FROM posts WHERE status = 'published'";
+            }
             $find_count = mysqli_query($conn, $post_query_count);
             $count = mysqli_num_rows($find_count);
-            $count = ceil($count / $per_page);
+            if ($count < 1) {
+                echo "<h1 class='text-center'>No posts available!</h1>";
+            } else {
+                $count = ceil($count / $per_page);
 
-            $query = "SELECT * FROM posts LIMIT $page_1, $per_page";
-            $getPosts = mysqli_query($conn, $query);
-            while ($row = mysqli_fetch_assoc($getPosts)) {
-                $post_id = $row["id"];
-                $post_title = $row["title"];
-                $post_author = $row["author"];
-                $post_date = $row["date"];
-                $post_image = $row["image"];
-                $post_content = substr($row["content"], 0, 150) . "...";
-                $post_status = $row["status"];
-                if ($post_status == 'published') {
+                $query = "SELECT * FROM posts LIMIT $page_1, $per_page";
+                $getPosts = mysqli_query($conn, $query);
+                while ($row = mysqli_fetch_assoc($getPosts)) {
+                    $post_id = $row["id"];
+                    $post_title = $row["title"];
+                    $post_author = $row["author"];
+                    $post_date = $row["date"];
+                    $post_image = $row["image"];
+                    $post_content = substr($row["content"], 0, 150) . "...";
+                    $post_status = $row["status"];
 
             ?>
                     <h2>
@@ -89,7 +95,7 @@
         <?php
         for ($i = 1; $i <= $count; $i++) {
             if ($i == $page) {
-echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
             } else {
                 echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
             }
