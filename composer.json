@@ -1,0 +1,17 @@
+{
+    "name": "angel/phpLyrics",
+    "require": {
+        "phpmailer/phpmailer": "^6.1"
+    },
+    "autoload": {
+        "classmap": [
+            "classes"
+        ]
+    },
+    "authors": [
+        {
+            "name": "angel arakov",
+            "email": "arcsalesltd@gmail.com"
+        }
+    ]
+}

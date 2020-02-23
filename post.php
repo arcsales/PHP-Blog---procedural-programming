@@ -1,6 +1,5 @@
 <?php include('includes/db.php'); ?>
 <?php include('includes/header.php'); ?>
-<?php include('admin/functions.php'); ?>
 
 <!-- Navigation -->
 <?php include('includes/nav.php'); ?>
@@ -21,7 +20,7 @@
                 $update_views = mysqli_query($conn, $view_query);
                 confirm($conn);
 
-                if ($_SESSION['role'] == 'admin') {
+                if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
                     $query = "SELECT * FROM posts WHERE id = {$post_id}";
                 } else {
 

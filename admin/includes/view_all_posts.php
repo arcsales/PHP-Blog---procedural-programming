@@ -75,8 +75,13 @@ if (isset($_POST['checkBoxArray'])) {
         </thead>
         <tbody>
             <?php
-            $query = "SELECT * FROM posts ORDER BY id DESC";
+            // $query = "SELECT * FROM posts ORDER BY id DESC";
+            $query = "SELECT posts.id, posts.category_id, posts.author, posts.status, posts.date, posts.title, posts.content, posts.image, posts.tags, posts.comment_count, posts.views_count, ";
+            $query .= "categories.cat_id, categories.cat_title ";
+            $query .= "FROM posts ";
+            $query .= "LEFT JOIN categories ON posts.category_id = categories.cat_id ORDER BY posts.id DESC";
             $getPosts = mysqli_query($conn, $query);
+            confirm($getPosts);
 
             while ($row = mysqli_fetch_assoc($getPosts)) {
                 $post_id = $row['id'];
@@ -89,21 +94,23 @@ if (isset($_POST['checkBoxArray'])) {
                 $comments = $row['comment_count'];
                 $date = $row['date'];
                 $views = $row['views_count'];
+                $cat_title = $row['cat_title'];
+                $cat_id = $row['cat_id'];
                 echo "<tr>"; ?>
 
                 <td><input type="checkbox" class="checkBoxes" name="checkBoxArray[]" value="<?php echo $post_id; ?>"></td>
 
-            <?php
+                <?php
                 echo "<td>{$post_id}</td>
                                 <td>{$title}</td>";
-
+                /* 
                 $query = "SELECT * FROM categories WHERE cat_id = {$category}";
                 $getCategories = mysqli_query($conn, $query);
 
                 while ($category = mysqli_fetch_assoc($getCategories)) {
                     $cat_id = $category["cat_id"];
-                    $cat_title = $category["cat_title"];
-                }
+                    $cat_title = $category["cat_title"]; */
+                // }
                 echo "<td>{$cat_title}</td>
 
                                 <td>{$author}</td>
@@ -117,19 +124,27 @@ if (isset($_POST['checkBoxArray'])) {
 
                 echo "<td>{$date}</td>
                                 <td><a href='posts.php?reset={$post_id}'>{$views}</a></td>
-                                <td><a href='../post.php?p_id={$post_id}'>View</a></td>
-                                <td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>
-                                <td><a href='javascript:void(0)' rel='$post_id' class='delete_btn'>Delete</a></td>
-                                </tr>";
+                                <td><a class='btn btn-primary' href='../post.php?p_id={$post_id}'>View</a></td>
+                                <td><a class='btn btn-info' href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>"; ?>
+
+                <form method="post">
+                    <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                    <?php
+                    echo "<td><input class='btn btn-danger' type='submit' value='Delete' name='delete'></td>";
+                    ?>
+                </form>
+
+            <?php
+
+                echo "</tr>";
             }
-            //<td><a onClick =\"javascript: return confirm('Are you sure you want to delete the post?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
             ?>
 
-        </tbody> 
+        </tbody>
     </table>
 </form>
-<?php if (isset($_GET['delete'])) {
-    $post_id = $_GET['delete'];
+<?php if (isset($_POST['delete'])) {
+    $post_id = $_POST['post_id'];
     $query = "DELETE FROM posts WHERE id = {$post_id}";
     $getDeleted = mysqli_query($conn, $query);
     header("Location: posts.php");
@@ -140,7 +155,7 @@ if (isset($_GET['reset'])) {
     $resetQuery = mysqli_query($conn, $query);
     header("Location: posts.php");
 } ?>
-<script>
+<!-- <script>
     $(document).ready(function() {
         $(".delete_btn").on('click', function() {
             var id = $(this).attr("rel");
@@ -149,4 +164,4 @@ if (isset($_GET['reset'])) {
             $("#myModal").modal('show');
         })
     });
-</script>
+</script> -->

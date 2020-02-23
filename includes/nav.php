@@ -19,21 +19,21 @@
                 $getCategories = mysqli_query($conn, $query);
                 while ($category = mysqli_fetch_assoc($getCategories)) {
                     $cat_title = $category["cat_title"];
-                    echo "<li><a href='#'>{$cat_title}</a></li>";
+                    $cat_id = $category["cat_id"];
+
+                    echo "<li><a href='category.php?category={$cat_id}'>{$cat_title}</a></li>";
                 }
-                ?>
-                <li><a href="admin">Admin</a></li>
-                <?php
-                if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
-                    if (isset($_GET['p_id'])) {
-                        $post_id = $_GET['p_id'];
-                        echo "<li><a href='admin/posts.php?source=edit_post&p_id={$post_id}'>Edit post</a></li>";
-                    }
-                }
-                ?>
-                <li>
-                    <a href="./registration.php">Registration</a>
-                </li>
+                if (isLoggedIn()) : ?>
+                    <li><a href="admin">Admin</a></li>
+                    <li><a href="admin/includes/logout.php">Logout</a></li>
+                <?php else : ?>
+                    <li>
+                        <a href="./registration.php">Registration</a>
+                    </li>
+                    <li>
+                        <a href="./login.php">Login</a>
+                    </li>
+                <?php endif; ?>
                 <li>
                     <a href="./contact.php">Contact</a>
                 </li>

@@ -1,3 +1,9 @@
 - Improve security
-  - escape strings in all inputs
-  - deny access to any url related to GET methods
+- escape strings in all inputs
+- deny access to any url related to GET methods
+- hide admin button if role not admin
+- rename admin link
+- escape empty data enter DB
+- join tables where possible to reduce sql requests
+- create user page for subscribers
+- admin panel to be accessed only by admins!!!

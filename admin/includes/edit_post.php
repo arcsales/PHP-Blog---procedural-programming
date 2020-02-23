@@ -21,7 +21,7 @@ while ($row = mysqli_fetch_assoc($getPosts_by_id)) {
 if (isset($_POST['update_post'])) {
     $author = $_POST['author'];
     $title = $_POST['title'];
-    $content = $_POST['post_content'];
+    $content =  escape($_POST['post_content']);
     $category = $_POST['post_category'];
     $status = $_POST['post_status'];
     $post_image = $_FILES['image']['name'];
@@ -66,12 +66,16 @@ if (isset($_POST['update_post'])) {
             <?php
             $query = "SELECT * FROM categories";
             $getCategories = mysqli_query($conn, $query);
-
             confirm($getCategories);
-            while ($category = mysqli_fetch_assoc($getCategories)) {
-                $cat_id = $category["cat_id"];
-                $cat_title = $category["cat_title"];
-                echo "<option value='{$cat_id}'>{$cat_title}</option>";
+
+            while ($row = mysqli_fetch_assoc($getCategories)) {
+                $cat_id = $row["cat_id"];
+                $cat_title = $row["cat_title"];
+                if ($cat_id == $category) {
+                    echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
+                } else {
+                    echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                }
             }
 
             ?>
@@ -133,7 +137,7 @@ if (isset($_POST['update_post'])) {
     </div>
     <div class="form-group">
         <label for="post_content">Post Content</label>
-        <textarea id="post_content" class="form-control" type="text" name="post_content" cols="30" rows="10"><?php echo $author; ?></textarea>
+        <textarea id="post_content" class="form-control" type="text" name="post_content" cols="30" rows="10"><?php echo str_replace('\r\n','</br>',$content); ?></textarea>
     </div>
     <div class="form-group">
         <input class="btn btn-primary" type="submit" name="update_post" value="Publish Post">

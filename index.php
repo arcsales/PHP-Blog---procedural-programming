@@ -24,13 +24,12 @@
             } else {
                 $page = "";
             }
-
             if ($page == "" || $page == 1) {
                 $page_1 = 0;
             } else {
                 $page_1 = ($page * $per_page) - $per_page;
             }
-            if ($_SESSION['role'] == 'admin') {
+            if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
                 $post_query_count = "SELECT * FROM posts";
             } else {
                 $post_query_count = "SELECT * FROM posts WHERE status = 'published'";

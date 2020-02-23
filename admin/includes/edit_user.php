@@ -8,7 +8,6 @@ if (isset($_GET['edit_user'])) {
     while ($row = mysqli_fetch_assoc($selectUsers)) {
         $user_id = $row['user_id'];
         $username = $row['username'];
-        //$get_user_password = $row['user_password'];
         $user_firstname = $row['user_firstname'];
         $user_lastname = $row['user_lastname'];
         $user_email = $row['user_email'];
@@ -41,7 +40,6 @@ if (isset($_POST['edit_user'])) {
     $update_user = mysqli_query($conn, $query);
     confirm($update_user);
     $asd = $_POST['user_password'];
-    echo "ff " . $_POST['user_password'] . "ff";
 }
 ?>
 
